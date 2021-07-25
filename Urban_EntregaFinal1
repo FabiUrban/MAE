@@ -1,0 +1,399 @@
+/*Urban_EntregaFinal2
+ 
+ --Trabajo en proceso--
+ 
+ El programa escribe dos relojes encimados en numeros blancos sobre fondo negro.
+ Estos relojes son una síntesis del video The reflecting pool de Bill Viola.
+ Los relojes comienzan sincronicos, pero en el desarrollo saltan al pasado o al futuro, 
+ para finalmente volver a sincronizarse.
+ A su vez se envía la visualidad obtenida a Resolume Arena para hacer el mapping de la videoinstalación
+ Es un programa "precario"
+ */
+
+
+
+import processing.video.*; 
+Movie movie; 
+
+//import codeanticode.syphon.*; //para enviar lo dibujado a Resolume Arena
+//SyphonServer server;
+
+int milis, segundos, minutos; //pantalla arriba
+int milis1, segundos1, minutos1; //pantalla abajo
+int milisT, segundosT, minutosT; // reloj testigo para hacer pruebas
+int milisR, segundosR, minutosR; // reloj reversa
+
+//int xArriba, yArriba, xAbajo, yAbajo;
+int minutosA, minutosB, minutosC, minutosD, minutosE, minutosF, minutosG, minutosH;
+
+void setup() {
+  size(640, 480);
+ 
+  //size(640, 480, P3D);  //para usar con Shyphon
+  //server = new SyphonServer(this, "Processing Syphon");
+  movie = new Movie(this, "thereflectingpool.mov"); 
+  frameRate(100);
+  movie.loop();
+  noStroke();
+}
+
+void movieEvent(Movie movie) {  
+  movie.read();
+}
+
+
+void draw() {
+   
+  imageMode(CENTER);
+  image(movie, width/2, height/2);
+
+background(0);
+  //reloj arriba
+  milis = milis +1;
+  if (milis > 99) {
+    milis = 0;
+    segundos = segundos +1;
+  }
+  if (segundos > 59) {
+    segundos = 0;
+    minutos = minutos +1;
+  }
+
+  //reloj abajo
+  milis1 = milis1 +1;
+  if (milis1 > 99) {
+    milis1 = 0;
+    segundos1 = segundos1 +1;
+  }
+  if (segundos1 > 59) {
+    segundos1 = 0;
+    minutos1 = minutos1 +1;
+  }
+
+
+  textSize(20);
+  fill(100);
+  //reloj testigo para correcciones
+  //text(minutos, width/2-100, height/17);
+  //text(segundos, width/2, height/17);
+  //text(milis, width/2+100, height/3);
+
+  fill(255);
+  //reloj arriba
+  text(minutos, width/2-100, height/3);
+  text(segundos, width/2, height/3);
+  text(milis, width/2+100, height/3);
+
+  //reloj abajo
+  text(minutos1, width/2-100, height*2/3);
+  text(segundos1, width/2, height*2/3);
+  text(milis1, width/2+100, height*2/3);
+
+  //0:00 negro. se oye ruido electr'onico
+  //0:15 corte directo
+
+  //1:39 el tiempo se detiene. escuchamos su grito
+  if (minutos >= 1 && segundos >= 39) { 
+    fill(0);
+    rect(width/2-110, 140, 250, 24);
+    fill(255);
+    text("1             " + " 39            " + "00", width/2-100, height/3);
+  }
+  //al llegar a 2, arriba se mantiene igual. se oye un pajaro
+  if (minutos >= 2 && segundos >= 00) { 
+    fill(0);
+    rect(width/2-110, 140, 250, 24);
+    fill(255);
+    text("1             " + " 39            " + "00", width/2-100, height/3);
+  }
+  //2:00 se oye un pajaro
+  //2:05 se aclara la luz. tiempo se acelera y desacelera?
+  //2:20 comienza a oscurecerse. se hace de noche?
+  //2:33 se aquieta. es otro momento
+
+  //2:35 1er salto temporal. pasado? futuro?
+  if (minutos1 >= 2 && segundos1 >= 35) { 
+    fill(0);
+    rect(width/2-110, 140, 250, 24); //Arriba se mantiene igual
+    fill(255);
+    text("1             " + " 39            " + "00", width/2-100, height/3);
+
+    minutosA=minutos-1; //=1
+    fill(0);
+    rect(width/2-110, 300, 250, 24); 
+    fill(255);
+    text(minutosA, width/2-100, height*2/3);
+    text(segundos1, width/2, height*2/3);
+    text(milis1, width/2+100, height*2/3);
+  }
+
+  //2:49 el agua se perturba
+
+  // 3:00. cuando llega a 3 mantenerse igual. Aca sirve el reloj testigo
+  if (minutos1 >= 3 && segundos1 >= 00) { 
+    fill(0);
+    rect(width/2-110, 140, 250, 24); //Arriba
+    fill(255);
+    text("1             " + " 39            " + "00", width/2-100, height/3);
+
+    minutosA=minutos-1;
+    fill(0);
+    rect(width/2-110, 300, 250, 24); 
+    fill(255);
+    text(minutosA, width/2-100, height*2/3);
+    text(segundos1, width/2, height*2/3);
+    text(milis1, width/2+100, height*2/3);
+  } 
+
+
+
+  //3:15 2do cambio de tiempo abajo
+  if (minutos >= 3 && segundos >= 15) { 
+    fill(0);
+    rect(width/2-110, 140, 250, 24); //Arriba
+    fill(255);
+    text("1             " + " 39            " + "00", width/2-100, height/3);
+
+    minutosB=minutos-3; // =0
+    //segundos1=segundos+20;
+    fill(0);
+    rect(width/2-110, 300, 250, 24); 
+    fill(255);
+    text(minutosB, width/2-100, height*2/3);
+    text(segundos1, width/2, height*2/3);
+    text(milis1, width/2+100, height*2/3);
+  }
+
+  //3:22 el agua se perturba
+
+  //3:43. 3er cambio de tiempo abajo
+  if (minutos1 >= 3 && segundos1 >= 43) {
+    fill(0);
+    rect(width/2-110, 140, 250, 24); //Arriba
+    fill(255);
+    text("1             " + " 39            " + "00", width/2-100, height/3);  
+
+    minutosC=minutos+1; //=4
+    //segundos1=segundos+20;
+    fill(0);
+    rect(width/2-110, 300, 250, 24); 
+    fill(255);
+    text(minutosC, width/2-100, height*2/3);
+    text(segundos1, width/2, height*2/3);
+    text(milis1, width/2+100, height*2/3);
+  }
+
+  //3:50. el agua se perturba
+
+
+  // 4:00. cuando llega a 4:00 mantenerse igual. El cuerpo comienza a desaparecer
+  if (minutos1 >= 4 && segundos1 >= 00) { 
+    fill(0);
+    rect(width/2-110, 140, 250, 24);
+    fill(255);
+    text("1             " + " 39            " + "00", width/2-100, height/3);
+
+    minutosC=minutos+1;
+    fill(0);
+    rect(width/2-110, 300, 250, 24); 
+    fill(255);
+    text(minutosC, width/2-100, height*2/3);
+    text(segundos1, width/2, height*2/3);
+    text(milis1, width/2+100, height*2/3);
+  }
+
+
+  //4:16. al futuro
+  if (minutos1 >= 4 && segundos1 >= 16) { //
+    fill(0);
+    rect(width/2-110, 140, 250, 24); //Arriba
+    fill(255);
+    text("1             " + " 39            " + "00", width/2-100, height/3);
+
+    minutosD=minutos+3; //=7
+    fill(0);
+    rect(width/2-110, 300, 250, 24); 
+    fill(255);
+    text(minutosD, width/2-100, height*2/3);
+    text(segundos1, width/2, height*2/3);
+    text(milis1, width/2+100, height*2/3);
+  } 
+
+  //4:28. el agua se perturba
+
+  //4:43. al futuro
+  if (minutos1 >= 4 && segundos1 >= 43) { 
+    fill(0);
+    rect(width/2-110, 140, 250, 24); //Arriba
+    fill(255);
+    text("1             " + " 39            " + "00", width/2-100, height/3);
+
+    minutosE=minutos+5; //9
+    fill(0);
+    rect(width/2-110, 300, 250, 24); 
+    fill(255);
+    text(minutosE, width/2-100, height*2/3);
+    text(segundos1, width/2, height*2/3);
+    text(milis1, width/2+100, height*2/3);
+  } 
+
+  //4:48. el cuerpo/feto desaparece. vemos el reflejo de alguien caminando, dos cuerpos
+
+
+  //  cuando llega a 5:00 mantenerse igual
+  if (minutos1 >= 5 && segundos1 >= 00) { 
+    fill(0);
+    rect(width/2-110, 140, 250, 24);
+    fill(255);
+    text("1             " + " 39            " + "00", width/2-100, height/3);
+
+    minutosE=minutos+5;//=10
+    fill(0);
+    rect(width/2-110, 300, 250, 24); 
+    fill(255);
+    text(minutosE, width/2-100, height*2/3);
+    text(segundos1, width/2, height*2/3);
+    text(milis1, width/2+100, height*2/3);
+  }
+
+
+  //5:07 --- abajo en reversa hasta 5:20
+  if (minutos1 >= 5 && segundos1 >= 7) { //
+    fill(0);
+    rect(width/2-110, 140, 250, 24); //Arriba
+    fill(255);
+    text("1             " + " 39            " + "00", width/2-100, height/3);
+
+    //reloj abajo
+    milisR = milisR -1;
+    if (milisR < -60) {
+      milisR = 0;
+      segundosR = segundosR -1;
+    }
+    if (segundosR < -59) {
+      segundosR = 0;
+      minutosR = minutosR -1;
+    }
+    fill(0);
+    rect(width/2-110, 300, 250, 24); //Arriba
+    fill(255);
+    text(minutosR, width/2-100, height*2/3);
+    text(segundosR, width/2, height*2/3);
+    text(milisR, width/2+100, height*2/3);
+  }
+
+  //5:20. comienza a oscurecerse
+  if (minutos1 >= 5 && segundos1 >= 20) { 
+    fill(0);
+    rect(width/2-110, 140, 250, 24); //Arriba
+    fill(255);
+    text("1             " + " 39            " + "00", width/2-100, height/3);
+
+    minutosF=minutos-8; //-3
+    fill(0);
+    rect(width/2-110, 300, 250, 24); 
+    fill(255);
+    text(minutosF, width/2-100, height*2/3);
+    text(segundos1, width/2, height*2/3);
+    text(milis1, width/2+100, height*2/3);
+  } 
+
+
+  //5:41. se aclara un segundo
+  if (minutos1 >= 5 && segundos1 >= 41) { 
+    fill(0);
+    rect(width/2-110, 140, 250, 24); //Arriba
+    fill(255);
+    text("1             " + " 39            " + "00", width/2-100, height/3);
+
+    minutosG=minutos-8; //-3
+    fill(0);
+    rect(width/2-110, 300, 250, 24); 
+    fill(255);
+    text(minutosG, width/2-100, height*2/3);
+    text(segundos1, width/2, height*2/3);
+    text(milis1, width/2+100, height*2/3);
+  }
+
+  //5:43. comienza a oscurecerse
+  if (minutos1 >= 5 && segundos1 >= 43) { 
+    fill(0);
+    rect(width/2-110, 140, 250, 24); //Arriba
+    fill(255);
+    text("1             " + " 39            " + "00", width/2-100, height/3);
+
+    minutosH=minutos-8; //-3
+    fill(0);
+    rect(width/2-110, 300, 250, 24); 
+    fill(255);
+    text(minutosH, width/2-100, height*2/3);
+    text(segundos1, width/2, height*2/3);
+    text(milis1, width/2+100, height*2/3);
+  } 
+
+  //5:55. se aclara un poco
+  if (minutos >= 5 && segundos >= 55) { 
+    fill(0);
+    rect(width/2-110, 140, 250, 24);
+    fill(255);
+    text(minutos, width/2-100, height/3);
+    text(segundos, width/2, height/3);
+    text(milis, width/2+100, height/3);
+
+    //reloj abajo
+    minutosF=minutos+2; //7
+    fill(0);
+    rect(width/2-110, 300, 250, 24); 
+    fill(255);
+    text(minutosF, width/2-100, height*2/3);
+    text(segundos1, width/2, height*2/3);
+    text(milis1, width/2+100, height*2/3);
+  }
+
+
+
+  //  cuando llega a 6:00 mantenerse igual
+  if (minutos1 >= 6 && segundos1 >= 00) { 
+    fill(0);
+    rect(width/2-110, 140, 250, 24);
+    fill(255);
+    text("1             " + " 39            " + "00", width/2-100, height/3);
+
+    minutosF=minutos+1;//=6
+    fill(0);
+    rect(width/2-110, 300, 250, 24); 
+    fill(255);
+    text(minutosF, width/2-100, height*2/3);
+    text(segundos1, width/2, height*2/3);
+    text(milis1, width/2+100, height*2/3);
+  }
+
+  //6:05. SINCRO
+  if (minutos1 >= 6 && segundos1 >= 5) { 
+    fill(0);
+    rect(width/2-110, 140, 250, 24);
+    fill(255);
+    //reloj arriba
+    text(minutos, width/2-100, height/3);
+    text(segundos, width/2, height/3);
+    text(milis, width/2+100, height/3);
+
+    //reloj abajo
+    fill(0);
+    rect(width/2-110, 300, 250, 24); 
+    fill(255);
+    text(minutos1, width/2-100, height*2/3);
+    text(segundos1, width/2, height*2/3);
+    text(milis1, width/2+100, height*2/3);
+  } 
+
+//flashforward adelante, 2 segundos
+
+  //FIN
+  //if (minutos >= 6 && segundos == 54) { 
+  //}
+
+
+  //server.sendScreen();
+  //println(minutos);
+}
